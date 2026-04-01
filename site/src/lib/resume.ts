@@ -20,7 +20,7 @@ const parseJsonArray = (payload: string | null): string[] => {
 
 export const getProfile = (): Profile => {
   const db = getDb();
-  const row = db.prepare("SELECT * FROM profile LIMIT 1").get() as Record<
+  const row = db.prepare("SELECT * FROM profile LIMIT 1").get() as Record
     string,
     unknown
   >;
@@ -47,24 +47,26 @@ export const getExperiences = (): Experience[] => {
   const db = getDb();
   const rows = db
     .prepare("SELECT * FROM experience ORDER BY start_date DESC")
-    .all();
+    .all() as Record<string, unknown>[];
   return rows.map(
     (item) =>
       ({
         ...item,
-        description: parseJsonArray(item.description),
+        description: parseJsonArray(item.description as string | null),
       }) as Experience,
   );
 };
 
 export const getProjects = (): Project[] => {
   const db = getDb();
-  const rows = db.prepare("SELECT * FROM projects ORDER BY id ASC").all();
+  const rows = db
+    .prepare("SELECT * FROM projects ORDER BY id ASC")
+    .all() as Record<string, unknown>[];
   return rows.map(
     (item) =>
       ({
         ...item,
-        description: parseJsonArray(item.description),
+        description: parseJsonArray(item.description as string | null),
       }) as Project,
   );
 };
