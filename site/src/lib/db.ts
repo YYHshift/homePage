@@ -1,7 +1,7 @@
 ﻿import Database from "better-sqlite3";
 import path from "node:path";
 
-let db: Database.Database | null = null;
+let db: Database | null = null;
 
 export const getDb = () => {
   if (!db) {
