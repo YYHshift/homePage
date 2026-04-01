@@ -20,10 +20,12 @@ const parseJsonArray = (payload: string | null): string[] => {
 
 export const getProfile = (): Profile => {
   const db = getDb();
-  const row = db.prepare("SELECT * FROM profile LIMIT 1").get() as Record
+  // 修复点：添加了 Record 后的 < 符号
+  const row = db.prepare("SELECT * FROM profile LIMIT 1").get() as Record<
     string,
     unknown
   >;
+  
   return {
     id: row.id as string,
     full_name: row.full_name as string,
