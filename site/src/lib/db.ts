@@ -1,8 +1,7 @@
 ﻿import Database from "better-sqlite3";
-import type { Database as DatabaseType } from "better-sqlite3";
 import path from "node:path";
 
-let db: DatabaseType | null = null;
+let db: InstanceType<typeof Database> | null = null;
 
 export const getDb = () => {
   if (!db) {
