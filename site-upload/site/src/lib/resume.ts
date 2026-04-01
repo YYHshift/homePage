@@ -1,0 +1,76 @@
+﻿import type {
+  Education,
+  Experience,
+  Profile,
+  Project,
+  Skill,
+} from "@/types/database";
+import { getDb } from "./db";
+
+const parseJsonArray = (payload: string | null): string[] => {
+  if (!payload) return [];
+  try {
+    const parsed = JSON.parse(payload);
+    return Array.isArray(parsed) ? parsed : [];
+  } catch (error) {
+    console.error("Failed to parse JSON column", error);
+    return [];
+  }
+};
+
+export const getProfile = (): Profile => {
+  const db = getDb();
+  const row = db.prepare("SELECT * FROM profile LIMIT 1").get();
+  return {
+    id: row.id,
+    full_name: row.full_name,
+    headline: row.headline,
+    summary: row.summary,
+    email: row.email,
+    github_url: row.github_url,
+    linkedin_url: row.linkedin_url,
+    avatar_url: row.avatar_url,
+  };
+};
+
+export const getEducation = (): Education[] => {
+  const db = getDb();
+  return db
+    .prepare("SELECT * FROM education ORDER BY start_date DESC")
+    .all() as Education[];
+};
+
+export const getExperiences = (): Experience[] => {
+  const db = getDb();
+  const rows = db
+    .prepare("SELECT * FROM experience ORDER BY start_date DESC")
+    .all();
+  return rows.map(
+    (item) =>
+      ({
+        ...item,
+        description: parseJsonArray(item.description),
+      }) as Experience,
+  );
+};
+
+export const getProjects = (): Project[] => {
+  const db = getDb();
+  const rows = db.prepare("SELECT * FROM projects ORDER BY id ASC").all();
+  return rows.map(
+    (item) =>
+      ({
+        ...item,
+        description: parseJsonArray(item.description),
+      }) as Project,
+  );
+};
+
+export const getSkills = (): Skill[] => {
+  const db = getDb();
+  return db
+    .prepare(
+      "SELECT * FROM skills ORDER BY category ASC, COALESCE(display_order, id) ASC",
+    )
+    .all() as Skill[];
+};
