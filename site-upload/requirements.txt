@@ -1,4 +1,0 @@
-node>=20.11
-npm>=10.2
-better-sqlite3==12.8.0
-sql.js==1.14.1
