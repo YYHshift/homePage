@@ -20,16 +20,19 @@ const parseJsonArray = (payload: string | null): string[] => {
 
 export const getProfile = (): Profile => {
   const db = getDb();
-  const row = db.prepare("SELECT * FROM profile LIMIT 1").get();
+  const row = db.prepare("SELECT * FROM profile LIMIT 1").get() as Record<
+    string,
+    unknown
+  >;
   return {
-    id: row.id,
-    full_name: row.full_name,
-    headline: row.headline,
-    summary: row.summary,
-    email: row.email,
-    github_url: row.github_url,
-    linkedin_url: row.linkedin_url,
-    avatar_url: row.avatar_url,
+    id: row.id as string,
+    full_name: row.full_name as string,
+    headline: (row.headline as string) ?? null,
+    summary: (row.summary as string) ?? null,
+    email: (row.email as string) ?? null,
+    github_url: (row.github_url as string) ?? null,
+    linkedin_url: (row.linkedin_url as string) ?? null,
+    avatar_url: (row.avatar_url as string) ?? null,
   };
 };
 
