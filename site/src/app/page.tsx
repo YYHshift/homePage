@@ -231,15 +231,13 @@ export default function Home() {
                 <Code size={20} />
               </span>
               <div>
-                <h2 className="text-2xl font-semibold text-white">
-                  Featured Projects
-                </h2>
+                <h2 className="text-2xl font-semibold text-white">Projects</h2>
                 <p className="text-sm text-slate-400">
                   Products that combine AI, data pipelines, and UX polish.
                 </p>
               </div>
             </div>
-            <div className="grid gap-6 md:grid-cols-2">
+            <div className="grid gap-6">
               {projects.map((project) => (
                 <div
                   key={project.id}
